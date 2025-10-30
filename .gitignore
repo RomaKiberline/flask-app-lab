@@ -1,5 +1,12 @@
-venv/
+.idea/
+.vscode/
+.venv/
+.venv*/
+venv*/
+**/__pycache__/
 __pycache__/
-*.pyc
-.env
-.flaskenv
+dist/
+.coverage*
+htmlcov/
+.tox/
+docs/_build/
