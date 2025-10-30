@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block title %}Привітання{% endblock %}
+
+{% block content %}
+<h2>Привіт, {{ name }}!</h2>
+<p>Твій вік: {{ age }}</p>
+
+<nav>
+    <ul>
+        <li><a href="{{ url_for('users.greetings', name='Roman') }}?age=19">Roman</a></li>
+        <li><a href="{{ url_for('users.admin') }}">Admin</a></li>
+    </ul>
+</nav>
+{% endblock %}

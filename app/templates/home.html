@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block title %}Головна сторінка{% endblock %}
+
+{% block content %}
+<section class="home">
+    <h1>Вітаю</h1>
+    <p>Це головна сторінка проєкту</p>
+    <p>Перейди до сторінок користувачів або продуктів за допомогою меню.</p>
+
+    <ul>
+        <li><a href="{{ url_for('users.greetings', name='Roman', age=19) }}">Сторінка користувача</a></li>
+        <li><a href="{{ url_for('products.list_products') }}">Сторінка продуктів</a></li>
+    </ul>
+</section>
+{% endblock %}
