@@ -5,17 +5,33 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}Flask App{% endblock %}</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    {% block extra_css %}{% endblock %}
 </head>
-<body>
+<body {% block body_attrs %}{% endblock %}>
     <header>
         <nav>
             <a href="{{ url_for('home') }}">Головна</a>
-            <a href="{{ url_for('users.greetings', name='Roman') }}?age=19">Users</a>
-            <a href="{{ url_for('products.list_products') }}">Products</a>
+            <a href="{{ url_for('home') }}#resume">Резюме</a>
+            <a href="{{ url_for('users.profile') }}">Профіль</a>
+            <a href="{{ url_for('users.login') }}">Вхід</a>
+            <a href="{{ url_for('products.list_products') }}">Продукти</a>
         </nav>
     </header>
 
     <main>
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <div class="flash-messages">
+                    {% for category, message in messages %}
+                        <div class="flash-message flash-{{ category }}">
+                            {{ message }}
+                            <button class="flash-close" onclick="this.parentElement.remove()">×</button>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %}
+        
         {% block content %}{% endblock %}
     </main>
 
