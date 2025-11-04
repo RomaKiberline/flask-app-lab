@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Тестовий скрипт для перевірки функціоналу Lab 4
+Тестовий скрипт для перевірки функціоналу
 """
 
 import requests
@@ -51,8 +51,7 @@ def test_profile_access_without_login():
 def test_cookie_management(session):
     """Тест 5: Перевірка управління cookies"""
     print("\n🔍 Тест 5: Перевірка управління cookies...")
-    
-    # Додавання cookie
+
     response = session.post(f"{BASE_URL}/users/add-cookie", data={
         'key': 'test_key',
         'value': 'test_value',
@@ -62,13 +61,11 @@ def test_cookie_management(session):
             'Cookie &#34;test_key&#34; додано' in response.text)
     print("✅ Cookie успішно додано")
     
-    # Перевірка відображення cookie
     response = session.get(f"{BASE_URL}/users/profile")
     assert 'test_key' in response.text
     assert 'test_value' in response.text
     print("✅ Cookie відображається в таблиці")
     
-    # Видалення cookie
     response = session.get(f"{BASE_URL}/users/delete-cookie/test_key", allow_redirects=True)
     assert ('Cookie "test_key" видалено' in response.text or 
             'Cookie &#34;test_key&#34; видалено' in response.text)
@@ -78,14 +75,12 @@ def test_color_scheme(session):
     """Тест 6: Перевірка зміни кольорової схеми"""
     print("\n🔍 Тест 6: Перевірка зміни кольорової схеми...")
     
-    # Встановлення темної теми
     response = session.get(f"{BASE_URL}/users/set-color-scheme/dark", allow_redirects=True)
     assert ('Кольорову схему змінено на "dark"' in response.text or 
             'Кольорову схему змінено на &#34;dark&#34;' in response.text)
     assert 'dark-theme' in response.text
     print("✅ Темна тема встановлена")
     
-    # Встановлення світлої теми
     response = session.get(f"{BASE_URL}/users/set-color-scheme/light", allow_redirects=True)
     assert ('Кольорову схему змінено на "light"' in response.text or 
             'Кольорову схему змінено на &#34;light&#34;' in response.text)
@@ -104,7 +99,6 @@ def test_flash_messages():
     print("\n🔍 Тест 8: Перевірка flash повідомлень...")
     session = requests.Session()
     
-    # Помилка входу
     response = session.post(f"{BASE_URL}/users/login", data={
         'username': 'wrong',
         'password': 'wrong'
@@ -112,7 +106,6 @@ def test_flash_messages():
     assert 'flash-error' in response.text
     print("✅ Flash повідомлення з категорією 'error' працює")
     
-    # Успішний вхід
     response = session.post(f"{BASE_URL}/users/login", data={
         'username': 'admin',
         'password': 'admin123'

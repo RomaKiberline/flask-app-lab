@@ -201,7 +201,6 @@ footer {
     margin-top: auto;
 }
 
-/* Flash Messages */
 .flash-messages {
     margin-bottom: 2rem;
 }
@@ -266,7 +265,6 @@ footer {
     opacity: 1;
 }
 
-/* Form Styles */
 .form-container {
     background: white;
     border-radius: 16px;
@@ -345,7 +343,6 @@ footer {
     background: #e0a800;
 }
 
-/* Profile Page */
 .profile-container {
     background: white;
     border-radius: 16px;
@@ -435,7 +432,6 @@ footer {
     margin-top: 1rem;
 }
 
-/* Light Theme */
 body.light-theme {
     background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
 }
@@ -445,7 +441,6 @@ body.light-theme .profile-container {
     color: #333;
 }
 
-/* Dark Theme */
 body.dark-theme {
     background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
 }

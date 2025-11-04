@@ -2,11 +2,11 @@ from flask import render_template, request, redirect, url_for, session, flash, m
 from app.users import users_bp
 from functools import wraps
 
-# Заглушка для автентифікації (без бази даних)
+
 USERS = {
     'admin': 'admin123',
     'user': 'password',
-    'roman': 'flask2024'
+    'roman': 'roman123'
 }
 
 def login_required(f):
@@ -34,8 +34,8 @@ def login():
     if request.method == 'POST':
         username = request.form.get('username')
         password = request.form.get('password')
-        
-        # Перевірка автентифікації
+
+
         if username in USERS and USERS[username] == password:
             session['username'] = username
             flash(f'Ласкаво просимо, {username}!', 'success')
@@ -52,13 +52,13 @@ def profile():
     """Сторінка профілю"""
     username = session.get('username')
     
-    # Отримання всіх cookies (окрім системних)
+
     cookies = {}
     for key, value in request.cookies.items():
-        if key not in ['session']:  # Виключаємо системні cookies
+        if key not in ['session']:
             cookies[key] = value
     
-    # Отримання кольорової схеми з cookies
+
     color_scheme = request.cookies.get('color_scheme', 'default')
     
     return render_template('users/profile.html', 
@@ -114,7 +114,7 @@ def delete_all_cookies():
     response = make_response(redirect(url_for('users.profile')))
     
     for key in request.cookies.keys():
-        if key not in ['session']:  # Зберігаємо системні cookies
+        if key not in ['session']:
             response.delete_cookie(key)
     
     flash('Всі cookies видалено.', 'success')
@@ -129,6 +129,6 @@ def set_color_scheme(scheme):
         return redirect(url_for('users.profile'))
     
     response = make_response(redirect(url_for('users.profile')))
-    response.set_cookie('color_scheme', scheme, max_age=60*60*24*365)  # 1 рік
+    response.set_cookie('color_scheme', scheme, max_age=60*60*24*365)
     flash(f'Кольорову схему змінено на "{scheme}".', 'success')
     return response
