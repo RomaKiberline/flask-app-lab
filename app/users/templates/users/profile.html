@@ -1,0 +1,110 @@
+{% extends "base.html" %}
+
+{% block title %}Профіль - {{ username }}{% endblock %}
+
+{% block body_attrs %}
+{% if color_scheme == 'light' %}
+class="light-theme"
+{% elif color_scheme == 'dark' %}
+class="dark-theme"
+{% endif %}
+{% endblock %}
+
+{% block content %}
+<div class="profile-container">
+    <div class="profile-header">
+        <h1>Вітаємо, {{ username }}!</h1>
+        <p>Ви успішно увійшли в систему</p>
+        <a href="{{ url_for('users.logout') }}" class="btn btn-danger" style="display: inline-block; margin-top: 1rem;">Вийти</a>
+    </div>
+
+    <div class="profile-section">
+        <h3>📝 Управління Cookies</h3>
+        
+        <form method="POST" action="{{ url_for('users.add_cookie') }}" class="cookie-form">
+            <div>
+                <label for="key" style="display: block; margin-bottom: 0.3rem; font-weight: 600; color: #667eea;">Ключ:</label>
+                <input type="text" id="key" name="key" placeholder="Ключ" required>
+            </div>
+            <div>
+                <label for="value" style="display: block; margin-bottom: 0.3rem; font-weight: 600; color: #667eea;">Значення:</label>
+                <input type="text" id="value" name="value" placeholder="Значення" required>
+            </div>
+            <div>
+                <label for="max_age" style="display: block; margin-bottom: 0.3rem; font-weight: 600; color: #667eea;">Термін (сек):</label>
+                <input type="number" id="max_age" name="max_age" placeholder="Термін дії (сек)" min="0">
+            </div>
+            <button type="submit" class="btn-submit">Додати Cookie</button>
+        </form>
+
+        <div style="margin-top: 1rem;">
+            <a href="{{ url_for('users.delete_all_cookies') }}" 
+               class="btn btn-danger btn-small"
+               onclick="return confirm('Ви впевнені, що хочете видалити всі cookies?')">
+                Видалити всі Cookies
+            </a>
+        </div>
+
+        <h4 style="margin-top: 1.5rem; color: #667eea;">Поточні Cookies:</h4>
+        {% if cookies %}
+        <table class="cookie-table">
+            <thead>
+                <tr>
+                    <th>Ключ</th>
+                    <th>Значення</th>
+                    <th>Дії</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for key, value in cookies.items() %}
+                <tr>
+                    <td><strong>{{ key }}</strong></td>
+                    <td>{{ value }}</td>
+                    <td>
+                        <a href="{{ url_for('users.delete_cookie', key=key) }}" 
+                           class="btn btn-danger btn-small"
+                           onclick="return confirm('Видалити cookie \'{{ key }}\'?')">
+                            Видалити
+                        </a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+        <p style="color: #666; font-style: italic;">Немає збережених cookies</p>
+        {% endif %}
+    </div>
+
+    <div class="profile-section">
+        <h3>🎨 Кольорова схема</h3>
+        <p style="margin-bottom: 1rem; color: #666;">
+            Поточна схема: <strong>{{ color_scheme }}</strong>
+        </p>
+        
+        <div class="color-scheme-buttons">
+            <a href="{{ url_for('users.set_color_scheme', scheme='default') }}" 
+               class="btn btn-primary">
+                Стандартна
+            </a>
+            <a href="{{ url_for('users.set_color_scheme', scheme='light') }}" 
+               class="btn btn-secondary" 
+               style="background: #f5f7fa; color: #333; border: 2px solid #667eea;">
+                Світла
+            </a>
+            <a href="{{ url_for('users.set_color_scheme', scheme='dark') }}" 
+               class="btn btn-secondary" 
+               style="background: #2c3e50; color: #ecf0f1;">
+                Темна
+            </a>
+        </div>
+    </div>
+
+    <div class="profile-section">
+        <h3>ℹ️ Інформація про сесію</h3>
+        <p style="color: #666;">
+            Ваше ім'я користувача збережено в сесії. Ви можете вийти з системи, натиснувши кнопку "Вийти" вгорі.
+        </p>
+    </div>
+</div>
+{% endblock %}
