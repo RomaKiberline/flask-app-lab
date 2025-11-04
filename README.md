@@ -122,5 +122,5 @@ http://localhost:5000/users/login
 ---
 
 **Автор**: Roman Chupyrchuk  
-**Дата**: 4.11.2024  
+**Дата**: 4.11.2025
 **Гілка**: lab4
