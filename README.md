@@ -68,6 +68,7 @@ http://localhost:5000/users/login
 | roman | roman123 |
 
 ## Скріншоти
+<<<<<<< HEAD
 <img width="1920" height="1080" alt="register" src="https://github.com/user-attachments/assets/b9859e16-4ce6-4222-a550-4a2218ee7ec7" />
 <img width="1920" height="1080" alt="profile" src="https://github.com/user-attachments/assets/a76f1e05-a91d-485a-bbad-942c5a436338" />
 <img width="1920" height="1080" alt="product" src="https://github.com/user-attachments/assets/27ebe41f-f14a-41df-ad94-c85c16f7b4d0" />
@@ -77,6 +78,24 @@ http://localhost:5000/users/login
 <img width="1920" height="1080" alt="contact" src="https://github.com/user-attachments/assets/d1d51370-b9f4-43ef-9b24-3329014a5ee9" />
 <img width="1920" height="1080" alt="change_password" src="https://github.com/user-attachments/assets/856f5cce-9b3a-4544-bed2-e6df97daebe8" />
 
+=======
+
+![Головна сторінка](screens/main.png)
+
+![Сторінка входу](screens/login.png)
+
+![Сторінка реєстрації](screens/register.png)
+
+![Профіль користувача](screens/profile.png)
+
+![Редагування профілю](screens/edit_profile.png)
+
+![Зміна паролю](screens/change_password.png)
+
+![Сторінка товару](screens/product.png)
+
+![Контактна форма](screens/contact.png)
+>>>>>>> 8714878 (lab5 commit delete update)
 
 **Автор**: Roman Chupyrchuk  
 **Дата**: 8.11.2025  
