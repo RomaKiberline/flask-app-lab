@@ -1,0 +1,87 @@
+{% extends "base.html" %}
+
+{% block title %}Профіль користувача{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="text-center">Профіль користувача</h2>
+                </div>
+                <div class="card-body">
+                    {% with messages = get_flashed_messages(with_categories=true) %}
+                        {% if messages %}
+                            {% for category, message in messages %}
+                                <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                                    {{ message }}
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                </div>
+                            {% endfor %}
+                        {% endif %}
+                    {% endwith %}
+                    
+                    <div class="row mb-4">
+                        <div class="col-md-4 text-center">
+                            <div class="mb-3">
+                                <img src="{{ url_for('static', filename='images/default-avatar.png') }}" 
+                                     class="img-fluid rounded-circle" 
+                                     alt="Аватар" 
+                                     style="width: 150px; height: 150px; object-fit: cover;">
+                            </div>
+                            <button class="btn btn-outline-primary btn-sm">Змінити фото</button>
+                        </div>
+                        <div class="col-md-8">
+                            <h3>{{ current_user.username }}</h3>
+                            <p class="text-muted">Зареєстрований: {{ current_user.registered_on.strftime('%d.%m.%Y') if current_user.registered_on else 'Дата не вказана' }}</p>
+                            <p><strong>Email:</strong> {{ current_user.email }}</p>
+                            <p><strong>Роль:</strong> {{ current_user.role|default('Користувач') }}</p>
+                            
+                            <div class="mt-4">
+                                <a href="{{ url_for('users.edit_profile') }}" class="btn btn-primary me-2">
+                                    <i class="bi bi-pencil"></i> Редагувати профіль
+                                </a>
+                                <a href="{{ url_for('users.change_password') }}" class="btn btn-outline-secondary me-2">
+                                    <i class="bi bi-key"></i> Змінити пароль
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="card mt-4">
+                        <div class="card-header">
+                            <h5 class="mb-0">Додаткова інформація</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <p><strong>Ім'я:</strong> {{ current_user.first_name or 'Не вказано' }}</p>
+                                    <p><strong>Прізвище:</strong> {{ current_user.last_name or 'Не вказано' }}</p>
+                                </div>
+                                <div class="col-md-6">
+                                    <p><strong>Телефон:</strong> {{ current_user.phone or 'Не вказано' }}</p>
+                                    <p><strong>Країна:</strong> {{ current_user.country or 'Не вказано' }}</p>
+                                </div>
+                            </div>
+                            
+                            {% if current_user.about_me %}
+                                <div class="mt-3">
+                                    <h6>Про себе:</h6>
+                                    <p class="text-muted">{{ current_user.about_me }}</p>
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                    
+                    <div class="mt-4 text-end">
+                        <a href="{{ url_for('users.logout') }}" class="btn btn-outline-danger">
+                            <i class="bi bi-box-arrow-right"></i> Вийти
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

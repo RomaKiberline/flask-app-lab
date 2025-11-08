@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+
+{% block title %}Сторінку не знайдено{% endblock %}
+
+{% block content %}
+<div class="container min-vh-100 d-flex align-items-center justify-content-center">
+    <div class="row justify-content-center">
+        <div class="col-12 col-md-10 col-lg-8 text-center">
+        
+            <div class="mb-4">
+                <svg width="200" height="200" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org2000/svg" class="text-primary">
+                    <path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M12 8V12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M12 16H12.01" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </div>
+            
+            <h1 class="display-1 fw-bold text-primary mb-2">404</h1>
+            
+            <h2 class="h1 mb-3">Сторінку не знайдено</h2>
+            
+            <p class="lead text-muted mb-4">На жаль, сторінка, яку ви шукаєте, не існує або була переміщена. Спробуйте перейти на головну сторінку.</p>
+            
+            <div class="d-flex gap-3 justify-content-center">
+                <a href="{{ url_for('main.home') }}" class="btn btn-primary btn-lg px-4">
+                    <i class="bi bi-house-door me-2"></i>На головну
+                </a>
+                <a href="javascript:history.back()" class="btn btn-outline-secondary btn-lg px-4">
+                    <i class="bi bi-arrow-left me-2"></i>Назад
+                </a>
+            </div>
+            
+            <div class="mt-5 small text-muted">
+                <p class="mb-1">Якщо ви вважаєте, що це помилка, будь ласка, зв'яжіться з нами.</p>
+                <a href="{{ url_for('contact.contact') if url_for('contact.contact') != '#' else '#' }}" class="text-decoration-none">
+                    Зв'язатися з підтримкою <i class="bi bi-arrow-right"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .min-vh-100 {
+        min-height: 100vh;
+    }
+    .btn {
+        transition: all 0.3s ease;
+    }
+    .btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+</style>
+{% endblock %}

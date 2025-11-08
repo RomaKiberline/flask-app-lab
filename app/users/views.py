@@ -1,134 +1,120 @@
-from flask import render_template, request, redirect, url_for, session, flash, make_response
+from flask import render_template, request, redirect, url_for, flash
+from flask_login import login_user, logout_user, login_required, current_user
 from app.users import users_bp
-from functools import wraps
+from app.forms import LoginForm, RegistrationForm
+from app.users.models import User, USERS
+from datetime import datetime
 
-
-USERS = {
-    'admin': 'admin123',
-    'user': 'password',
-    'roman': 'roman123'
-}
-
-def login_required(f):
-    """Декоратор для перевірки автентифікації"""
-    @wraps(f)
-    def decorated_function(*args, **kwargs):
-        if 'username' not in session:
-            flash('Будь ласка, увійдіть в систему для доступу до цієї сторінки.', 'error')
-            return redirect(url_for('users.login'))
-        return f(*args, **kwargs)
-    return decorated_function
-
-@users_bp.route('/hi/<name>')
-def greetings(name):
-    age = request.args.get('age', 'невідомо')
-    return render_template('users/hi.html', name=name.upper(), age=age)
-
-@users_bp.route('/admin')
-def admin():
-    return redirect(url_for('users.greetings', name='Administrator', age=19))
+@users_bp.route('/register', methods=['GET', 'POST'])
+def register():
+    """Сторінка реєстрації"""
+    if current_user.is_authenticated:
+        return redirect(url_for('users.profile'))
+    
+    form = RegistrationForm()
+    if form.validate_on_submit():
+        user_id = max(USERS.keys()) + 1 if USERS else 1
+        user = User.create(
+            id=user_id,
+            username=form.username.data,
+            email=form.email.data,
+            password=form.password.data
+        )
+        login_user(user)
+        flash(f'Вітаємо, {user.username}! Ваш акаунт успішно створено.', 'success')
+        return redirect(url_for('users.profile'))
+    
+    return render_template('users/register.html', form=form)
 
 @users_bp.route('/login', methods=['GET', 'POST'])
 def login():
     """Сторінка входу"""
-    if request.method == 'POST':
-        username = request.form.get('username')
-        password = request.form.get('password')
-
-
-        if username in USERS and USERS[username] == password:
-            session['username'] = username
-            flash(f'Ласкаво просимо, {username}!', 'success')
-            return redirect(url_for('users.profile'))
+    if current_user.is_authenticated:
+        return redirect(url_for('users.profile'))
+    
+    form = LoginForm()
+    if form.validate_on_submit():
+        user = User.get_by_username(form.username.data) or User.get_by_email(form.username.data)
+        
+        if user and user.check_password(form.password.data):
+    
+            login_user(user, remember=form.remember.data)
+            user.update_last_seen()
+        
+            next_page = request.args.get('next')
+            
+            remember_msg = " (запам'ятовано)" if form.remember.data else ""
+            flash(f'Вітаємо, {user.username}! Ви успішно увійшли до системи{remember_msg}.', 'success')
+            
+            return redirect(next_page or url_for('users.profile'))
         else:
-            flash('Невірне ім\'я користувача або пароль.', 'error')
-            return redirect(url_for('users.login'))
-    
-    return render_template('users/login.html')
-
-@users_bp.route('/profile')
-@login_required
-def profile():
-    """Сторінка профілю"""
-    username = session.get('username')
-    
-
-    cookies = {}
-    for key, value in request.cookies.items():
-        if key not in ['session']:
-            cookies[key] = value
-    
-
-    color_scheme = request.cookies.get('color_scheme', 'default')
-    
-    return render_template('users/profile.html', 
-                         username=username, 
-                         cookies=cookies,
-                         color_scheme=color_scheme)
+        
+            flash('Невірне ім\'я користувача або пароль.', 'danger')
+            
+    return render_template('users/login.html', form=form)
 
 @users_bp.route('/logout')
 @login_required
 def logout():
     """Вихід з системи"""
-    username = session.get('username')
-    session.pop('username', None)
-    flash(f'До побачення, {username}!', 'info')
+    username = current_user.username
+    logout_user()
+    flash(f'До побачення, {username}! Ви вийшли з системи.', 'info')
     return redirect(url_for('users.login'))
 
-@users_bp.route('/add-cookie', methods=['POST'])
+@users_bp.route('/profile')
 @login_required
-def add_cookie():
-    """Додавання cookie"""
-    key = request.form.get('key')
-    value = request.form.get('value')
-    max_age = request.form.get('max_age', type=int)
-    
-    if not key or not value:
-        flash('Ключ і значення не можуть бути порожніми.', 'error')
-        return redirect(url_for('users.profile'))
-    
-    response = make_response(redirect(url_for('users.profile')))
-    
-    if max_age and max_age > 0:
-        response.set_cookie(key, value, max_age=max_age)
-        flash(f'Cookie "{key}" додано з терміном дії {max_age} секунд.', 'success')
-    else:
-        response.set_cookie(key, value)
-        flash(f'Cookie "{key}" додано (сесійне).', 'success')
-    
-    return response
+def profile():
+    """Сторінка профілю користувача"""
+    return render_template('users/profile.html')
 
-@users_bp.route('/delete-cookie/<key>')
+@users_bp.route('/edit_profile', methods=['GET', 'POST'])
 @login_required
-def delete_cookie(key):
-    """Видалення окремого cookie"""
-    response = make_response(redirect(url_for('users.profile')))
-    response.delete_cookie(key)
-    flash(f'Cookie "{key}" видалено.', 'success')
-    return response
+def edit_profile():
+    """Редагування профілю користувача"""
+    from app.users.models import USERS
+    
+    if request.method == 'POST':
+        try:
+            current_user.first_name = request.form.get('first_name')
+            current_user.last_name = request.form.get('last_name')
+            current_user.phone = request.form.get('phone')
+            current_user.country = request.form.get('country')
+            current_user.about_me = request.form.get('about_me')
+            
+            USERS[current_user.id] = current_user
+            
+            flash('Профіль успішно оновлено!', 'success')
+            return redirect(url_for('users.profile'))
+        except Exception as e:
+            flash(f'Сталася помилка при оновленні профілю: {str(e)}', 'danger')
+    
+    return render_template('users/edit_profile.html')
 
-@users_bp.route('/delete-all-cookies')
+@users_bp.route('/change_password', methods=['GET', 'POST'])
 @login_required
-def delete_all_cookies():
-    """Видалення всіх cookies (окрім системних)"""
-    response = make_response(redirect(url_for('users.profile')))
+def change_password():
+    """Зміна пароля"""
+    from app.users.models import USERS
     
-    for key in request.cookies.keys():
-        if key not in ['session']:
-            response.delete_cookie(key)
+    if request.method == 'POST':
+        try:
+            current_password = request.form.get('current_password')
+            new_password = request.form.get('new_password')
+            confirm_password = request.form.get('confirm_password')
+            
+            if not current_user.check_password(current_password):
+                flash('Невірний поточний пароль', 'danger')
+            elif new_password != confirm_password:
+                flash('Новий пароль і підтвердження не співпадають', 'danger')
+            else:
+                current_user.set_password(new_password)
+            
+                USERS[current_user.id] = current_user
+                
+                flash('Пароль успішно змінено!', 'success')
+                return redirect(url_for('users.profile'))
+        except Exception as e:
+            flash(f'Сталася помилка при зміні пароля: {str(e)}', 'danger')
     
-    flash('Всі cookies видалено.', 'success')
-    return response
-
-@users_bp.route('/set-color-scheme/<scheme>')
-@login_required
-def set_color_scheme(scheme):
-    """Встановлення кольорової схеми"""
-    if scheme not in ['light', 'dark', 'default']:
-        flash('Невірна кольорова схема.', 'error')
-        return redirect(url_for('users.profile'))
-    
-    response = make_response(redirect(url_for('users.profile')))
-    response.set_cookie('color_scheme', scheme, max_age=60*60*24*365)
-    flash(f'Кольорову схему змінено на "{scheme}".', 'success')
-    return response
+    return render_template('users/change_password.html')
