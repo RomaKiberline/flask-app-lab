@@ -67,6 +67,16 @@ http://localhost:5000/users/login
 | user | password |
 | roman | roman123 |
 
+## Скріншоти
+<img width="1920" height="1080" alt="register" src="https://github.com/user-attachments/assets/b771cd24-995a-40c2-91be-d42f4bec4e8e" />
+<img width="1920" height="1080" alt="profile" src="https://github.com/user-attachments/assets/7d47d567-d227-4d89-8da7-f6ad15b01132" />
+<img width="1920" height="1080" alt="product" src="https://github.com/user-attachments/assets/11e2cf83-2c1f-4019-b9ad-bb91a51c68f0" />
+<img width="1920" height="1080" alt="main" src="https://github.com/user-attachments/assets/95fc6353-a4f8-46b5-83ff-a75a6c25b6ce" />
+<img width="1920" height="1080" alt="login" src="https://github.com/user-attachments/assets/e3494e04-da45-47eb-8f78-da979d3e8071" />
+<img width="1920" height="1080" alt="edit_profile" src="https://github.com/user-attachments/assets/a8c6e341-f011-48f3-a538-66f2546de0a9" />
+<img width="1920" height="1080" alt="contact" src="https://github.com/user-attachments/assets/298dd5b8-2f7d-4a07-a657-82a2f64a4126" />
+<img width="1920" height="1080" alt="change_password" src="https://github.com/user-attachments/assets/f5bd92d6-6aee-41ee-b726-f8573b595231" />
+
 
 **Автор**: Roman Chupyrchuk  
 **Дата**: 8.11.2025  
