@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+{% from "includes/macros.html" import render_field %}
+
+{% block title %}Контактна форма{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-10">
+            <div class="card border-0">
+                <div class="card-header bg-white border-0 pb-0">
+                    <h2 class="text-center my-2">Зв'яжіться з нами</h2>
+                </div>
+                <div class="card-body p-4">
+                    <div class="row g-4 align-items-start">
+                        <div class="col-md-5 d-flex">
+                            <div class="h-100 p-3 rounded w-100 border bg-light">
+                                <h5 class="mb-3 text-primary">Контактна інформація</h5>
+                                <ul class="list-unstyled mb-4">
+                                    <li class="mb-2"><strong>Email:</strong> support@example.com</li>
+                                    <li class="mb-2"><strong>Телефон:</strong> +380501234567</li>
+                                    <li class="mb-2"><strong>Адреса:</strong> вул. Прикладна, 1, Київ</li>
+                                    <li class="mb-2"><strong>Графік:</strong> Пн–Пт, 10:00–18:00</li>
+                                </ul>
+                                <div class="small text-muted">Ми відповімо протягом 1–2 робочих днів.</div>
+                            </div>
+                        </div>
+                        <div class="col-md-7 d-flex">
+                            <div class="w-100">
+                            <form method="POST" action="{{ url_for('contact') }}" novalidate>
+                        {{ form.csrf_token }}
+                        
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                {{ render_field(form.name, placeholder="Ваше ім'я") }}
+                            </div>
+                            <div class="col-md-6">
+                                {{ render_field(form.email, placeholder="email@example.com") }}
+                            </div>
+                        </div>
+                        
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                {{ render_field(form.phone, placeholder="+380XXXXXXXXX") }}
+                            </div>
+                            <div class="col-md-6">
+                                {{ render_field(form.subject) }}
+                            </div>
+                        </div>
+                        
+                        <div class="mb-3">
+                            {{ render_field(form.message, rows=5) }}
+                        </div>
+                        
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-primary">Надіслати повідомлення</button>
+                        </div>
+                            </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,17 @@
+{% macro render_field(field, placeholder=None, rows=None) %}
+    <div class="mb-3">
+        {{ field.label(class="form-label") }}
+        {% if rows is not none %}
+            {{ field(class="form-control" + (" is-invalid" if field.errors else ""), placeholder=placeholder, rows=rows)|safe }}
+        {% else %}
+            {{ field(class="form-control" + (" is-invalid" if field.errors else ""), placeholder=placeholder)|safe }}
+        {% endif %}
+        {% if field.errors %}
+            <div class="invalid-feedback">
+                {% for error in field.errors %}
+                    <span>{{ error }}</span>
+                {% endfor %}
+            </div>
+        {% endif %}
+    </div>
+{% endmacro %}

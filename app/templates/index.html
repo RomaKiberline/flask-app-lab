@@ -5,15 +5,15 @@
 {% block content %}
 <div class="home-container">
     <h1>Ласкаво просимо до Flask App!</h1>
-    <p class="subtitle">Лабораторна робота №3 - Модульна структура з Blueprints</p>
+    <p class="subtitle">Лабораторна робота №5</p>
     
     <div class="cards-container">
         <div class="card">
             <h2>👤 Користувачі</h2>
             <p>Перегляньте інформацію про користувачів</p>
             <div class="card-links">
-                <a href="{{ url_for('users.greetings', name='Roman') }}?age=19" class="btn btn-primary">Мій профіль</a>
-                <a href="{{ url_for('users.admin') }}" class="btn btn-secondary">Адмін панель</a>
+                <a href="{{ url_for('users.profile') }}" class="btn btn-primary">Мій профіль</a>
+                <a href="{{ url_for('users.login') }}" class="btn btn-secondary">Вхід</a>
             </div>
         </div>
         
