@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% block title %}Post: {{ post.title }}{% endblock %}
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-3">
+  <h1>{{ post.title }}</h1>
+  <div>
+    <a class="btn btn-warning" href="{{ url_for('post.edit_post', id=post.id) }}">Edit</a>
+    <a class="btn btn-outline-danger" href="{{ url_for('post.delete_post', id=post.id) }}">Delete</a>
+  </div>
+</div>
+<p class="text-muted">By {{ post.author }} • {{ post.category.value if post.category else 'other' }} • {{ post.posted.strftime('%Y-%m-%d %H:%M') if post.posted else '' }}</p>
+<div class="mb-4">{{ post.content }}</div>
+<a class="btn btn-secondary" href="{{ url_for('post.list_posts') }}">Back</a>
+{% endblock %}
