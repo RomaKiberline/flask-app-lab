@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+{% block title %}Posts{% endblock %}
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('post.static', filename='css/posts.css') }}">
+{% endblock %}
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-3">
+  <h1>All Posts</h1>
+  <a class="btn btn-primary" href="{{ url_for('post.create_post') }}">Add Post</a>
+</div>
+<div class="d-flex gap-2 mb-3">
+  <a class="btn btn-sm {{ 'btn-primary' if current_filter=='all' else 'btn-outline-primary' }}" href="{{ url_for('post.list_posts', filter='all') }}">All</a>
+  <a class="btn btn-sm {{ 'btn-primary' if current_filter=='active' else 'btn-outline-primary' }}" href="{{ url_for('post.list_posts', filter='active') }}">Active</a>
+  <a class="btn btn-sm {{ 'btn-primary' if current_filter=='inactive' else 'btn-outline-primary' }}" href="{{ url_for('post.list_posts', filter='inactive') }}">Inactive</a>
+  <div class="ms-auto small text-muted">Filter: {{ current_filter }}</div>
+  
+</div>
+<div class="row posts-grid">
+  {% for post in posts %}
+  <div class="col-md-4">
+    <div class="card h-100 {% if not post.is_active %}inactive-card{% endif %}">
+      <img src="{{ url_for('post.static', filename='img/sticker.svg') }}" class="card-img-top" alt="...">
+      <div class="card-body">
+        <h5 class="card-title">{{ post.title }}</h5>
+        <p class="meta mb-2">
+          <span class="badge text-bg-secondary">{{ post.category.value if post.category else 'other' }}</span>
+          {% if not post.is_active %}
+            <span class="badge text-bg-warning ms-1">inactive</span>
+          {% endif %}
+          <span class="ms-2">{{ post.posted.strftime('%Y-%m-%d %H:%M') if post.posted else '' }}</span>
+        </p>
+        <p class="card-text">{{ post.content[:100] }}{% if post.content|length > 100 %}...{% endif %}</p>
+        <a href="{{ url_for('post.detail_post', id=post.id) }}" class="btn btn-sm btn-outline-primary">View</a>
+      </div>
+    </div>
+  </div>
+  {% else %}
+  <p>No posts yet.</p>
+  {% endfor %}
+</div>
+{% endblock %}

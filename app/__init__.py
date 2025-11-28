@@ -3,6 +3,11 @@ from flask_wtf.csrf import CSRFProtect
 from flask_login import LoginManager, current_user
 from loguru import logger
 import os
+from flask_sqlalchemy import SQLAlchemy
+from flask_migrate import Migrate
+
+db = SQLAlchemy()
+migrate = Migrate()
 
 def create_app(config_name=None):
     app = Flask(__name__)
@@ -15,6 +20,9 @@ def create_app(config_name=None):
     
     csrf = CSRFProtect()
     csrf.init_app(app)
+    
+    db.init_app(app)
+    migrate.init_app(app, db)
     
     login_manager = LoginManager()
     login_manager.init_app(app)
@@ -35,11 +43,13 @@ def create_app(config_name=None):
     from app.products.views import products_bp
     from app.views import main_bp
     from app.contact import contact_bp
+    from app.posts import post_bp
 
     app.register_blueprint(main_bp)
     app.register_blueprint(users_bp, url_prefix='/users')
     app.register_blueprint(products_bp, url_prefix='/products')
     app.register_blueprint(contact_bp, url_prefix='')
+    app.register_blueprint(post_bp, url_prefix='/post')
     
     @app.errorhandler(404)
     def not_found_error(error):
@@ -58,11 +68,11 @@ def create_app(config_name=None):
         if form.validate_on_submit():
             try:
                 log_message = (
-                    f"New contact form submission:\\n"
-                    f"Name: {form.name.data}\\n"
-                    f"Email: {form.email.data}\\n"
-                    f"Phone: {form.phone.data}\\n"
-                    f"Subject: {form.subject.data}\\n"
+                    f"New contact form submission:\n"
+                    f"Name: {form.name.data}\n"
+                    f"Email: {form.email.data}\n"
+                    f"Phone: {form.phone.data}\n"
+                    f"Subject: {form.subject.data}\n"
                     f"Message: {form.message.data[:100]}..."
                 )
                 logger.info(log_message)

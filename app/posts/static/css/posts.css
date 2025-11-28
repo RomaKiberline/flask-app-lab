@@ -1,0 +1,60 @@
+.posts-grid { gap: 1.25rem; }
+
+.card {
+  border: none;
+  border-radius: 14px;
+  box-shadow: 0 6px 18px rgba(16, 24, 40, 0.06);
+  transition: transform .2s ease, box-shadow .2s ease;
+  height: 100%;
+}
+
+.card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 24px rgba(16, 24, 40, 0.1);
+}
+
+.card-img-top {
+  height: 180px;
+  object-fit: cover;
+  border-top-left-radius: 14px;
+  border-top-right-radius: 14px;
+}
+
+.card-title {
+  font-weight: 700;
+  font-size: 1.1rem;
+  margin-bottom: .35rem;
+}
+
+.card-text { font-size: 0.95rem; color: #475467; }
+
+.meta {
+  font-size: .85rem;
+  color: #667085;
+}
+
+.btn,
+.btn-sm {
+  border-radius: 10px;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, #6ea8fe, #3d8bfd);
+  border: none;
+}
+
+.btn-primary:hover {
+  filter: brightness(0.95);
+}
+
+.btn-outline-primary { border-width: 2px; }
+
+@media (min-width: 992px) {
+  .card-img-top { height: 200px; }
+}
+
+.inactive-card {
+  opacity: .75;
+  filter: grayscale(0.08);
+  border: 1px dashed #f1c232;
+}
