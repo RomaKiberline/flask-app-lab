@@ -84,7 +84,6 @@ http://localhost:5000
 ![Видалення поста](./screens/posts_delete.png)
 ![Скидання бд](./screens/drop_db.png)
 
-
 ### Частина 3 - Міграції
 ![Міграції](./screens/migration.png)
 
